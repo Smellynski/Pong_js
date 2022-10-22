@@ -74,61 +74,64 @@ class GameModel {
     this.ball.writeBallToDataGrid(this.dataGrid);
   }
 
-  ballMovement(direction) {
-    let dir = direction;
-    switch (dir) {
-      case 1:
-        this.ballMovementPlus();
-        break;
-      case 2:
-        this.ballMovementMinus();
-        break;
-      default:
-        if (dir != 1 && dir != 2) {
-          this.ballMovementMinus();
-        }
-    }
+  async timeout(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
-  ballMovementMinus() {
-    console.log("ich bins minus");
+  async ballMovementMinus() {
+    while (!this.ballCollision(1)) {
+      model.ball.clearBallFromDataGrid(this.dataGrid);
+      [this.ball.x, this.ball.y] = [(this.ball.x -= 1), (this.ball.y -= 1)];
+      this.addBall(this.ball);
+      this.renderState();
+      await this.timeout(20000);
+    }
+    this.ballMovementPlus();
+    /*console.log("ich bins minus");
     if (!this.ballCollision(1)) {
       model.ball.clearBallFromDataGrid(this.dataGrid);
       [this.ball.x, this.ball.y] = [(this.ball.x -= 1), (this.ball.y -= 1)];
       this.addBall(this.ball);
       this.renderState();
-    } else {
-      this.ballMovement(1);
       return false;
+    } else {
+      return 1;
     }
-    // left + top + 1
+    // left + top + 1*/
   }
 
-  ballMovementPlus() {
-    console.log("ich bins plus");
+  async ballMovementPlus() {
+    while (!this.ballCollision(2)) {
+      model.ball.clearBallFromDataGrid(this.dataGrid);
+      [this.ball.x, this.ball.y] = [(this.ball.x += 1), (this.ball.y += 1)];
+      this.addBall(this.ball);
+      this.renderState();
+      await this.timeout(20000);
+    }
+    this.ballMovementMinus();
+    /*console.log("ich bins plus");
     if (!this.ballCollision(2)) {
       model.ball.clearBallFromDataGrid(this.dataGrid);
       [this.ball.x, this.ball.y] = [(this.ball.x += 1), (this.ball.y += 1)];
       this.addBall(this.ball);
       this.renderState();
+      return false;
     } else {
-      this.ballMovement(2);
+      return 2;
     }
-    // right + down + 2
+    // right + down + 2*/
   }
 
   ballCollision(direction) {
     switch (direction) {
       case 1:
         if (this.ball.x <= 0 || this.ball.y <= 0) {
-          console.log("1");
           return true;
         } else {
           return false;
         }
       case 2:
-        if (this.ball.y >= 40 || this.ball.x >= 40) {
-          console.log("2");
+        if (this.ball.y >= 15 || this.ball.x >= 40) {
           return true;
         } else {
           return false;

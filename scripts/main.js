@@ -33,10 +33,10 @@ let newState = () => {
   }
   model.renderState();
 };
-setInterval(() => {
-  model.ballMovement();
-}, 500);
+
 newState();
+
+model.ballMovementMinus();
 
 document.addEventListener("keydown", (e) => {
   switch (e.key) {

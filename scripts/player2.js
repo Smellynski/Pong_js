@@ -2,7 +2,7 @@ class Player2 {
   constructor(playerModel) {
     this.playerModel2 = playerModel;
     this.y = 4;
-    this.x = 38;
+    this.x = 37;
   }
 
   writePlayer2ModelToDataGrid(dataGrid) {
