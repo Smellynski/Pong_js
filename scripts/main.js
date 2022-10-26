@@ -36,7 +36,7 @@ let newState = () => {
 
 newState();
 
-model.ballMovementMinus();
+model.ballMovement();
 
 document.addEventListener("keydown", (e) => {
   switch (e.key) {

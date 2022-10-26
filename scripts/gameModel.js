@@ -4,6 +4,7 @@ class GameModel {
     this.player1 = null;
     this.player2 = null;
     this.ball = null;
+    this.ballMovementVector = [-1, -1];
     this.grid = this.createGrid();
   }
 
@@ -60,11 +61,11 @@ class GameModel {
     switch (playerNumber) {
       case 1:
         model.player1 = player;
-        this.player1.writePlayer1ModelToDataGrid(this.dataGrid);
+        //this.player1.writePlayer1ModelToDataGrid(this.dataGrid);
         break;
       case 2:
         model.player2 = player;
-        this.player2.writePlayer2ModelToDataGrid(this.dataGrid);
+        //this.player2.writePlayer2ModelToDataGrid(this.dataGrid);
         break;
     }
   }
@@ -78,48 +79,18 @@ class GameModel {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
-  async ballMovementMinus() {
-    while (!this.ballCollision(1)) {
-      model.ball.clearBallFromDataGrid(this.dataGrid);
-      [this.ball.x, this.ball.y] = [(this.ball.x -= 1), (this.ball.y -= 1)];
-      this.addBall(this.ball);
-      this.renderState();
-      await this.timeout(20000);
-    }
-    this.ballMovementPlus();
-    /*console.log("ich bins minus");
+  async ballMovement() {
     if (!this.ballCollision(1)) {
       model.ball.clearBallFromDataGrid(this.dataGrid);
-      [this.ball.x, this.ball.y] = [(this.ball.x -= 1), (this.ball.y -= 1)];
+      [this.ball.x, this.ball.y] = [
+        (this.ball.x += this.ballMovementVector[0]),
+        (this.ball.y += this.ballMovementVector[1]),
+      ];
       this.addBall(this.ball);
       this.renderState();
-      return false;
-    } else {
-      return 1;
+      await this.timeout(200);
     }
-    // left + top + 1*/
-  }
-
-  async ballMovementPlus() {
-    while (!this.ballCollision(2)) {
-      model.ball.clearBallFromDataGrid(this.dataGrid);
-      [this.ball.x, this.ball.y] = [(this.ball.x += 1), (this.ball.y += 1)];
-      this.addBall(this.ball);
-      this.renderState();
-      await this.timeout(20000);
-    }
-    this.ballMovementMinus();
-    /*console.log("ich bins plus");
-    if (!this.ballCollision(2)) {
-      model.ball.clearBallFromDataGrid(this.dataGrid);
-      [this.ball.x, this.ball.y] = [(this.ball.x += 1), (this.ball.y += 1)];
-      this.addBall(this.ball);
-      this.renderState();
-      return false;
-    } else {
-      return 2;
-    }
-    // right + down + 2*/
+    this.ballMovementPlus();
   }
 
   ballCollision(direction) {
